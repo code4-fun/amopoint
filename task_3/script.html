@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+<!-- Add this code to the HTML file of your website -->
+<script>
+  async function getVisitorInfo() {
+    try {
+      const response = await fetch('https://ipinfo.io?token=6f65bcf1d105e8');
+      const data = await response.json();
+      return {
+        ip: data.ip,
+        city: data.city,
+        device: navigator.userAgent
+      };
+    } catch (error) {
+      console.error('Error retrieving visitor data:', error);
+      return null;
+    }
+  }
+
+  async function sendVisitorData() {
+    const visitorInfo = await getVisitorInfo();
+    if (visitorInfo) {
+      try {
+        await fetch('http://localhost/track.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(visitorInfo)
+        });
+      } catch (error) {
+        console.error('Error sending data to the server:', error);
+      }
+    }
+  }
+
+  window.onload = sendVisitorData;
+</script>
+
+</body>
+</html>
