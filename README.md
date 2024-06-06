@@ -23,4 +23,4 @@ password: 1
 <br>
 <br>
 
-![alt text](screen.jpg)
+![screen](screen.jpg)
